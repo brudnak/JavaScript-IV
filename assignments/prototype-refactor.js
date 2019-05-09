@@ -1,8 +1,7 @@
 
 class GameObject {
-    constructor({createdAt, dimensions}) {
-        this.createdAt = createdAt
-        this.dimensions = dimensions
+    constructor(attributes) {
+        Object.assign(this, attributes)
     }
     
     destroy() {
@@ -13,8 +12,7 @@ class GameObject {
 class CharacterStats extends GameObject {
     constructor(attributes) {
         super(attributes)
-        this.name = attributes.name
-        this.healthPoints = attributes.healthPoints
+        Object.assign(this, attributes)
     }
 
     takeDamage() {
@@ -25,9 +23,7 @@ class CharacterStats extends GameObject {
 class Humanoid extends CharacterStats {
     constructor(attributes) {
         super(attributes)
-        this.team = attributes.team
-        this.weapons = attributes.weapons
-        this.language = attributes.language
+        Object.assign(this, attributes)
     }
 
     greet() {
