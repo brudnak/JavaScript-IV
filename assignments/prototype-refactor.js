@@ -1,100 +1,43 @@
-/* 
 
-Prototype Refactor
-
-1. Copy and paste your code or the solution from yesterday
-
-2. Your goal is to refactor all of this code to use ES6 Classes. The console.log() statements should still return what is expected of them.
-
-*/
-
-/*
-  Object oriented design is commonly used in video games.  For this part of the assignment you will be implementing several constructor functions with their correct inheritance hierarchy.
-
-  In this file you will be creating three constructor functions: GameObject, CharacterStats, Humanoid.  
-
-  At the bottom of this file are 3 objects that all end up inheriting from Humanoid.  Use the objects at the bottom of the page to test your constructor functions.
-  
-  Each constructor function has unique properties and methods that are defined in their block comments below:
-*/
-
-/*
-  === GameObject ===
-  * createdAt
-  * name
-  * dimensions (These represent the character's size in the video game)
-  * destroy() // prototype method that returns: `${this.name} was removed from the game.`
-*/
-function GameObject(attributes) {
-    this.createdAt = attributes.createdAt
-    this.dimensions = attributes.dimensions
+class GameObject {
+    constructor({createdAt, dimensions}) {
+        this.createdAt = createdAt
+        this.dimensions = dimensions
+    }
+    
+    destroy() {
+        return `${this.name} was removed from the game.`
+    }
 }
 
-GameObject.prototype.destroy = function() {
-    return `${this.name} was removed from the game.`
+class CharacterStats extends GameObject {
+    constructor(attributes) {
+        super(attributes)
+        this.name = attributes.name
+        this.healthPoints = attributes.healthPoints
+    }
+
+    takeDamage() {
+        return `${this.name} took damage.`
+    }
 }
 
-/*
-  === CharacterStats ===
-  * healthPoints
-  * takeDamage() // prototype method -> returns the string '<object name> took damage.'
-  * should inherit destroy() from GameObject's prototype
-*/
-function CharacterStats(characterAttributes) {
-    // Connecting attributes
-    GameObject.call(this, characterAttributes)
-    this.name = characterAttributes.name // gives access to character name
-    this.healthPoints = characterAttributes.healthPoints // gives access to healthPoints
+class Humanoid extends CharacterStats {
+    constructor(attributes) {
+        super(attributes)
+        this.team = attributes.team
+        this.weapons = attributes.weapons
+        this.language = attributes.language
+    }
 
+    greet() {
+        return `${this.name} offers a greeting in ${this.language}`
+    }
+
+    takeDamage() {
+        return `${this.name} took damage.`
+    }
 }
-
-// Code below explained:
-// Set up the proto inheritance to GameObject
-CharacterStats.prototype = Object.create(GameObject.prototype)
-/* Andrew's Notes:
-  Gives characters created as new Humanoid access
-  to the GameObject prototype method destroy()
-  without it the code "console.log(swordsman.destroy())"
-  will not run and an error message stating
-  "TypeError: swordsman.destroy is not a function" is given
-*/
-
-CharacterStats.prototype.takeDamage = function() {
-    return `${this.name} took damage.`
-}
-
-/*
-  === Humanoid (Having an appearance or character resembling that of a human.) ===
-  * team
-  * weapons
-  * language
-  * greet() // prototype method -> returns the string '<object name> offers a greeting in <object language>.'
-  * should inherit destroy() from GameObject through CharacterStats
-  * should inherit takeDamage() from CharacterStats
-*/
-
-function Humanoid(humanoidAttributes) {
-    CharacterStats.call(this, humanoidAttributes)
-    this.team = humanoidAttributes.team
-    this.weapons = humanoidAttributes.weapons
-    this.language = humanoidAttributes.language
-}
-
-// Set up the proto inheritance to CharacterStats
-Humanoid.prototype = Object.create(CharacterStats.prototype)
-
-Humanoid.prototype.greet = function() {
-    return `${this.name} offers a greeting in ${this.language}`
-}
-
-/*
- * Inheritance chain: GameObject -> CharacterStats -> Humanoid
- * Instances of Humanoid should have all of the same properties as CharacterStats and GameObject.
- * Instances of CharacterStats should have all of the same properties as GameObject.
- */
-
-// Test you work by un-commenting these 3 objects and the list of console logs below:
-
 
 const mage = new Humanoid({
     createdAt: new Date(),
@@ -146,19 +89,36 @@ const archer = new Humanoid({
     language: 'Elvish',
 });
 
-console.log(mage.createdAt); // Today's date
-console.log(archer.dimensions); // { length: 1, width: 2, height: 4 }
-console.log(swordsman.healthPoints); // 15
-console.log(mage.name); // Bruce
-console.log(swordsman.team); // The Round Table
-console.log(mage.weapons); // Staff of Shamalama
-console.log(archer.language); // Elvish
-console.log(archer.greet()); // Lilith offers a greeting in Elvish.
-console.log(mage.takeDamage()); // Bruce took damage.
-console.log(swordsman.destroy()); // Sir Mustachio was removed from the game.
+const runLog = () => {
+    // Today's date
+    console.log(mage.createdAt)
 
+    // { length: 1, width: 2, height: 4 }
+    console.log(archer.dimensions)
 
-// Stretch task: 
-// * Create Villain and Hero constructor functions that inherit from the Humanoid constructor function.  
-// * Give the Hero and Villains different methods that could be used to remove health points from objects which could result in destruction if health gets to 0 or drops below 0;
-// * Create two new objects, one a villain and one a hero and fight it out with methods!
+     // 15
+    console.log(swordsman.healthPoints)
+
+    // Bruce
+    console.log(mage.name)
+
+    // The Round Table
+    console.log(swordsman.team)
+
+    // Staff of Shamalama
+    console.log(mage.weapons)
+
+    // Elvish
+    console.log(archer.language)
+
+    // Lilith offers a greeting in Elvish.
+    console.log(archer.greet())
+
+    // Bruce took damage.
+    console.log(mage.takeDamage())
+
+    // Sir Mustachio was removed from the game.
+    console.log(swordsman.destroy())
+}
+
+runLog()
