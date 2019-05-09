@@ -1,3 +1,5 @@
+'use strict'
+
 class Person {
     constructor(attributes) {
         this.name = attributes.name
