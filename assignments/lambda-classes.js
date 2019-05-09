@@ -1,5 +1,3 @@
-// CODE here for your Lambda Classes
-
 class Person {
     constructor(attributes) {
         this.name = attributes.name
@@ -39,7 +37,9 @@ class Student extends Person {
     }
 
     listsSubjects() {
-        return this.favSubjects
+        this.favSubjects.forEach((e) => {
+           return console.log(`One of ${this.name}'s favorite subjects: ${e}`)
+        })
     }
 
     PRAssignment(subject) {
@@ -100,7 +100,7 @@ const dan = new Instructor({
 
 const runLogs = () => {
     console.log(andrew.speak())
-    console.log(andrew.listsSubjects())
+    andrew.listsSubjects()
     console.log(andrew.PRAssignment('Redux'))
     console.log(andrew.sprintChallenge('JavaScript'))
     console.log(josh.speak())
